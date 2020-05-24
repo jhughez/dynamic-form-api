@@ -18,27 +18,26 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(schema = "AGINSPECT_DATA", name = "TSAI_FORM_TEMPLATE")
+@Table(schema = "QUESTIONNAIRE_DATA", name = "QUESTIONNAIRE_TEMPLATE")
 @Getter
 @Setter
 @EqualsAndHashCode
-public class FormTemplate  implements Serializable {
+public class QuestionnaireTemplate implements Serializable {
 
   @Id
   @GeneratedValue(strategy= GenerationType.IDENTITY)
   @Column(name = "TEMPLATE_ID") private long templateId;
   @Column(name = "TEMPLATE_TITLE") private String templateTitle;
   @Column(name = "TEMPLATE_DESC") private String templateDesc;
-  @Column(name = "TEMPLATE_ITYP_CODE") private String resultFormId;
 
-  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "formTemplate")
+  @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, mappedBy = "questionnaireTemplate")
   @OrderBy("order")
   @JsonManagedReference
   private Collection<Section> section;
 
 
   public void setSection(Collection<Section> section) {
-    section.forEach(x-> x.setFormTemplate(this));
+    section.forEach(x-> x.setQuestionnaireTemplate(this));
     this.section = section;
   }
 }

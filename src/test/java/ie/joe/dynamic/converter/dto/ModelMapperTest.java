@@ -6,9 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 
 import ie.joe.dynamic.dto.AllowableValueDTO;
 import ie.joe.dynamic.dto.AnswerDTO;
-import ie.joe.dynamic.dto.FormDTO;
-import ie.joe.dynamic.dto.FormTemplateDTO;
-import ie.joe.dynamic.dto.FormUserResponseDTO;
+import ie.joe.dynamic.dto.QuestionnaireDTO;
+import ie.joe.dynamic.dto.QuestionnaireTemplateDTO;
+import ie.joe.dynamic.dto.QuestionnaireUserResponseDTO;
 import ie.joe.dynamic.dto.GroupDTO;
 import ie.joe.dynamic.dto.QuestionDTO;
 import ie.joe.dynamic.dto.SectionDTO;
@@ -16,9 +16,9 @@ import ie.joe.dynamic.dto.ValidationRuleDTO;
 import ie.joe.dynamic.model.AllowableValue;
 import ie.joe.dynamic.model.Answer;
 import ie.joe.dynamic.model.Answer.AnswerPK;
-import ie.joe.dynamic.model.Form;
-import ie.joe.dynamic.model.FormTemplate;
-import ie.joe.dynamic.model.Group;
+import ie.joe.dynamic.model.Questionnaire;
+import ie.joe.dynamic.model.QuestionnaireTemplate;
+import ie.joe.dynamic.model.QuestionnaireGroup;
 import ie.joe.dynamic.model.GroupType;
 import ie.joe.dynamic.model.Question;
 import ie.joe.dynamic.model.Section;
@@ -43,8 +43,8 @@ class ModelMapperTest {
     modelMapper.addConverter(new AllowableValueDTOToAllowableValue());
     modelMapper.addConverter(new ValidationRuleDTOToValidationLink());
     modelMapper.addConverter(new ValidationLinkToValidationRuleDTO());
-    modelMapper.addConverter(new FormToFormDTO(modelMapper));
-    modelMapper.addConverter(new FormUserResponseDTOToForm());
+    modelMapper.addConverter(new QuestionnaireToQuestionnaireDTO(modelMapper));
+    modelMapper.addConverter(new QuestionnaireUserResponseDTOToQuestionnaire());
   }
 
   @Test
@@ -138,29 +138,26 @@ class ModelMapperTest {
   }
 
   @Test
-  void formUserResponseDTOToFormTest() {
-    FormUserResponseDTO formUserResponseDTO = new FormUserResponseDTO();
+  void questionnaireUserResponseDTOToQuestionnaireTest() {
+    QuestionnaireUserResponseDTO questionnaireUserResponseDTO = new QuestionnaireUserResponseDTO();
     AnswerDTO answerDTO = new AnswerDTO();
     answerDTO.setQuestionId(1);
     answerDTO.setAnswerValue("answer");
 
-    formUserResponseDTO.setFormId(1);
-    formUserResponseDTO.setInspId(1);
-    formUserResponseDTO.setTemplateId(1);
+    questionnaireUserResponseDTO.setQuestionnaireId(1);
+    questionnaireUserResponseDTO.setTemplateId(1);
 
-    formUserResponseDTO.setAnswers(Collections.singletonList(answerDTO));
+    questionnaireUserResponseDTO.setAnswers(Collections.singletonList(answerDTO));
 
-    Form form = modelMapper.map(formUserResponseDTO, Form.class);
+    Questionnaire questionnaire = modelMapper.map(questionnaireUserResponseDTO, Questionnaire.class);
 
-    assertEquals(form.getFormId(), formUserResponseDTO.getFormId(),
-        "Entity form ID should equal DTO form ID");
-    assertEquals(form.getInspId(), formUserResponseDTO.getInspId(),
-        "Entity inspection ID should equal DTO inspection ID");
-    assertEquals(form.getFormTemplate().getTemplateId(), formUserResponseDTO.getTemplateId(),
-        "template form ID should equal DTO template ID");
-    assertEquals(1, form.getAnswers().size(), "Form entity should only contain one answer");
+    assertEquals(questionnaire.getQuestionnaireId(), questionnaireUserResponseDTO.getQuestionnaireId(),
+        "Entity questionnaire ID should equal DTO questionnaire ID");
+    assertEquals(questionnaire.getQuestionnaireTemplate().getTemplateId(), questionnaireUserResponseDTO.getTemplateId(),
+        "template questionnaire ID should equal DTO template ID");
+    assertEquals(1, questionnaire.getAnswers().size(), "Questionnaire entity should only contain one answer");
 
-    Answer answer = form.getAnswers().iterator().next();
+    Answer answer = questionnaire.getAnswers().iterator().next();
     assertEquals(answer.getAnswerValue(), answerDTO.getAnswerValue(),
         "Entity answer value should equal DTO Answer Value");
     assertEquals(answer.getAnswerPK().getQuestionId(), answerDTO.getQuestionId(),
@@ -168,31 +165,27 @@ class ModelMapperTest {
   }
 
   @Test
-  void formToFormDTOTest() {
-    Form form = createForm();
-    FormDTO formDTO = modelMapper.map(form, FormDTO.class);
+  void questionnaireToQuestionnaireDTOTest() {
+    Questionnaire questionnaire = createQuestionnaire();
+    QuestionnaireDTO questionnaireDTO = modelMapper.map(questionnaire, QuestionnaireDTO.class);
 
-    //Form
-    assertEquals(form.getFormId(), formDTO.getFormId(), "Entity Form ID should equal DTO Form iD");
+    //Questionnaire
+    assertEquals(questionnaire.getQuestionnaireId(), questionnaireDTO.getQuestionnaireId(), "Entity Questionnaire ID should equal DTO Questionnaire iD");
 
-    assertEquals(form.getInspId(), formDTO.getInspId(), "Entity insp ID should equal DTO insp ID");
-
-    //Form Template
-    FormTemplateDTO formTemplateDTO = formDTO.getFormTemplate();
-    assertEquals(form.getFormTemplate().getTemplateId(), formTemplateDTO.getTemplateId(),
+    //Questionnaire Template
+    QuestionnaireTemplateDTO questionnaireTemplateDTO = questionnaireDTO.getQuestionnaireTemplate();
+    assertEquals(questionnaire.getQuestionnaireTemplate().getTemplateId(), questionnaireTemplateDTO.getTemplateId(),
         "Entity template ID should equal DTO template ID");
-    assertEquals(form.getFormTemplate().getTemplateTitle(), formTemplateDTO.getTemplateTitle(),
+    assertEquals(questionnaire.getQuestionnaireTemplate().getTemplateTitle(), questionnaireTemplateDTO.getTemplateTitle(),
         "Entity template title should equal DTO template title");
-    assertEquals(form.getFormTemplate().getTemplateDesc(), formTemplateDTO.getTemplateDesc(),
+    assertEquals(questionnaire.getQuestionnaireTemplate().getTemplateDesc(), questionnaireTemplateDTO.getTemplateDesc(),
         "Entity template Desc should equal DTO template Desc");
-    assertEquals(form.getFormTemplate().getResultFormId(), formTemplateDTO.getResultFormId(),
-        "Entity template ResultForm ID should equal DTO template ResultForm ID");
 
 
     //Section
-    assertEquals(1, formTemplateDTO.getSection().size(),
+    assertEquals(1, questionnaireTemplateDTO.getSection().size(),
         "There should be only one section in the test data");
-    SectionDTO sectionDTO = formTemplateDTO.getSection().iterator().next();
+    SectionDTO sectionDTO = questionnaireTemplateDTO.getSection().iterator().next();
     Section section = createSection();
     assertEquals(section.getSectionId(), sectionDTO.getSectionId(),
         "Entity Section ID should equal DTO Section ID");
@@ -205,7 +198,7 @@ class ModelMapperTest {
     assertEquals(1, sectionDTO.getGroup().size(),
         "There should be only one group in the test data");
     GroupDTO groupDTO = sectionDTO.getGroup().iterator().next();
-    Group group = createGroup();
+    QuestionnaireGroup group = createGroup();
     assertSame(group.getGroupId(), groupDTO.getGroupId(),
         "Entity group ID should equal DTO group ID");
     assertEquals(group.getGroupTitle(), groupDTO.getGroupTitle(),
@@ -228,13 +221,13 @@ class ModelMapperTest {
         "Entity answer should equal DTO question answer");
   }
 
-  private Form createForm() {
-    Form form = new Form();
-    form.setFormId(1);
-    form.setInspId(1);
-    form.setFormTemplate(createFormTemplate());
-    form.setAnswers(Collections.singletonList(createAnswer()));
-    return form;
+  private Questionnaire createQuestionnaire() {
+    Questionnaire questionnaire = new Questionnaire();
+    questionnaire.setQuestionnaireId(1);
+    questionnaire.setQuestionnaireId(1);
+    questionnaire.setQuestionnaireTemplate(createQuestionnaireTemplate());
+    questionnaire.setAnswers(Collections.singletonList(createAnswer()));
+    return questionnaire;
   }
 
   private Answer createAnswer() {
@@ -248,14 +241,13 @@ class ModelMapperTest {
   }
 
 
-  private FormTemplate createFormTemplate() {
-    FormTemplate formTemplate = new FormTemplate();
-    formTemplate.setTemplateId(1);
-    formTemplate.setTemplateTitle("Template Title");
-    formTemplate.setTemplateDesc("Template Desc");
-    formTemplate.setResultFormId("1");
-    formTemplate.setSection(Collections.singletonList(createSection()));
-    return formTemplate;
+  private QuestionnaireTemplate createQuestionnaireTemplate() {
+    QuestionnaireTemplate questionnaireTemplate = new QuestionnaireTemplate();
+    questionnaireTemplate.setTemplateId(1);
+    questionnaireTemplate.setTemplateTitle("Template Title");
+    questionnaireTemplate.setTemplateDesc("Template Desc");
+    questionnaireTemplate.setSection(Collections.singletonList(createSection()));
+    return questionnaireTemplate;
   }
 
   private Section createSection() {
@@ -267,8 +259,8 @@ class ModelMapperTest {
     return section;
   }
 
-  private Group createGroup() {
-    Group group = new Group();
+  private QuestionnaireGroup createGroup() {
+    QuestionnaireGroup group = new QuestionnaireGroup();
     group.setGroupId(1L);
     group.setGroupTitle("Group Title");
     group.setOrder(1L);

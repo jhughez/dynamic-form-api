@@ -5,9 +5,8 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class FormUserResponseDTO {
-  private long formId;
-  private long inspId;
+public class QuestionnaireUserResponseDTO {
+  private long questionnaireId;
   private long templateId;
   private Collection<AnswerDTO> answers;
 }

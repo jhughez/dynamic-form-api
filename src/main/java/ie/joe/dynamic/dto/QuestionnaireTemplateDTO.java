@@ -6,10 +6,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class FormTemplateDTO {
+public class QuestionnaireTemplateDTO {
     private long templateId;
     private String templateTitle;
     private String templateDesc;
-    private String resultFormId;
     private Collection<SectionDTO> section;
 }

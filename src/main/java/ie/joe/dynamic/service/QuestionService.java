@@ -64,7 +64,7 @@ public class QuestionService {
     validationLinkRepository.deleteById(new ValidationLinkPK(question.getQuestionId(), validationRule.getRuleId()));
   }
 
-  public void deleteActionToPerform(Long actionValId) {
+  public void deleteActionToPerquestionnaire(Long actionValId) {
     actionValueRepository.deleteById(actionValId);
   }
 

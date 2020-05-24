@@ -24,6 +24,6 @@ public class QuestionDTO {
     private String answerTypeName;
     private Collection<AllowableValueDTO> allowableValues;
     private Collection<ValidationRuleDTO> validationRules;
-    private Collection<ActionDTO> actionToPerform;
+    private Collection<ActionDTO> actionToPerquestionnaire;
     private String answer;
 }

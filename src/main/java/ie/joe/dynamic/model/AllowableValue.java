@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(schema = "AGINSPECT_DATA", name = "TSAI_ALLOWABLE_VALUE")
+@Table(schema = "QUESTIONNAIRE_DATA", name = "ALLOWABLE_VALUE")
 @Getter
 @Setter
 @EqualsAndHashCode

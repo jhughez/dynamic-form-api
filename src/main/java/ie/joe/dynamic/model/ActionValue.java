@@ -18,7 +18,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(schema = "AGINSPECT_DATA", name = "TSAI_ACTION_VALUE")
+@Table(schema = "QUESTIONNAIRE_DATA", name = "ACTION_VALUE")
 @Getter
 @Setter
 @EqualsAndHashCode
@@ -38,7 +38,7 @@ public class ActionValue implements Serializable {
     private Question question;
 
     @ManyToMany
-    @JoinTable(schema = "AGINSPECT_DATA", name = "TSAI_ACTION_LINK",
+    @JoinTable(schema = "QUESTIONNAIRE_DATA", name = "ACTION_LINK",
         joinColumns = {
             @JoinColumn(name = "ACT_VAL_ID", referencedColumnName = "ACT_VAL_ID",
                 nullable = false, updatable = false)},

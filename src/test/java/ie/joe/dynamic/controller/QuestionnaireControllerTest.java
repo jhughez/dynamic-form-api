@@ -10,9 +10,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ie.joe.dynamic.constants.ApiVersion;
-import ie.joe.dynamic.dto.FormDTO;
-import ie.joe.dynamic.model.Form;
-import ie.joe.dynamic.service.FormService;
+import ie.joe.dynamic.dto.QuestionnaireDTO;
+import ie.joe.dynamic.model.Questionnaire;
+import ie.joe.dynamic.service.QuestionnaireService;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -32,11 +32,11 @@ import org.springframework.web.util.NestedServletException;
 
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(controllers = FormController.class)
+@WebMvcTest(controllers = QuestionnaireController.class)
 @AutoConfigureMockMvc(addFilters = false)
-class FormControllerTest {
+class QuestionnaireControllerTest {
 
-  private final String baseUrl = "/api/" + ApiVersion.CURRENT + "/forms";
+  private final String baseUrl = "/api/" + ApiVersion.CURRENT + "/questionnaires";
 
   @Autowired
   private MockMvc mockMvc;
@@ -45,7 +45,7 @@ class FormControllerTest {
   private ModelMapper modelMapper;
 
   @MockBean
-  private FormService formService;
+  private QuestionnaireService questionnaireService;
 
   @Test
   void findAllTest() throws Exception {
@@ -60,30 +60,13 @@ class FormControllerTest {
   void findByIdNotFoundTest() {
     Exception exception = assertThrows(NestedServletException.class, () -> mockMvc.perform(get(baseUrl + "/1")));
     assertTrue(exception.getCause() instanceof NoSuchElementException, "Expected no such element exception to be thrown");
-    assertEquals("Unable to find form with id: [1]", exception.getCause().getMessage());
+    assertEquals("Unable to find questionnaire with id: [1]", exception.getCause().getMessage());
   }
 
   @Test
   void findByIdTest() throws Exception {
-    when(formService.findById(2)).thenReturn(Optional.of(new Form()));
+    when(questionnaireService.findById(2)).thenReturn(Optional.of(new Questionnaire()));
     ResultActions resultActions = mockMvc.perform( get(baseUrl + "/2")
-        .accept(MediaType.APPLICATION_JSON))
-        .andExpect(status().isOk());
-  }
-
-  @Test
-  void findByInspIdNotFoundTest() {
-    Exception exception = assertThrows(NestedServletException.class, () ->
-      mockMvc.perform(get(baseUrl + "/byInsp/1"))
-    );
-    assertTrue(exception.getCause() instanceof NoSuchElementException, "Expected no such element exception to be thrown");
-    assertEquals("Unable to find Form with inspId: [1]", exception.getCause().getMessage());
-  }
-
-  @Test
-  void findByInspIdTest() throws Exception {
-    when(formService.findByInspId(2)).thenReturn(java.util.Optional.of(new Form()));
-    mockMvc.perform( get(baseUrl + "/byInsp/2")
         .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk());
   }
@@ -91,10 +74,10 @@ class FormControllerTest {
   @Test
   void createTest() throws Exception {
 
-    FormDTO formDTO = new FormDTO();
-    formDTO.setFormId(1);
+    QuestionnaireDTO questionnaireDTO = new QuestionnaireDTO();
+    questionnaireDTO.setQuestionnaireId(1);
 
-    when(modelMapper.map(null, FormDTO.class)).thenReturn(formDTO);
+    when(modelMapper.map(null, QuestionnaireDTO.class)).thenReturn(questionnaireDTO);
 
     mockMvc.perform( MockMvcRequestBuilders
           .post(baseUrl)
@@ -102,38 +85,38 @@ class FormControllerTest {
           .contentType(MediaType.APPLICATION_JSON)
           .accept(MediaType.APPLICATION_JSON))
           .andExpect(status().isOk())
-          .andExpect(jsonPath("$.formId").exists());
+          .andExpect(jsonPath("$.questionnaireId").exists());
   }
 
   @Test
   void createIdExistsTest() throws Exception {
     MvcResult result = mockMvc.perform( MockMvcRequestBuilders
         .post(baseUrl)
-        .content("{\"formId\": 42}")
+        .content("{\"questionnaireId\": 42}")
         .contentType(MediaType.APPLICATION_JSON)
         .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isUnprocessableEntity())
         .andReturn();
 
     String content = result.getResponse().getContentAsString();
-    assertEquals("You cannot create a form with an ID.  Form ID is an auto generated field.",
+    assertEquals("You cannot create a questionnaire with an ID.  Questionnaire ID is an auto generated field.",
         content);
   }
 
   @Test
   void updateTest() throws Exception{
-    FormDTO formDTO = new FormDTO();
-    formDTO.setFormId(42);
+    QuestionnaireDTO questionnaireDTO = new QuestionnaireDTO();
+    questionnaireDTO.setQuestionnaireId(42);
 
-    when(modelMapper.map(null, FormDTO.class)).thenReturn(formDTO);
+    when(modelMapper.map(null, QuestionnaireDTO.class)).thenReturn(questionnaireDTO);
 
     mockMvc.perform( MockMvcRequestBuilders
         .put(baseUrl + "/42")
-        .content("{\"formId\": 42}")
+        .content("{\"questionnaireId\": 42}")
         .contentType(MediaType.APPLICATION_JSON)
         .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())
-        .andExpect(jsonPath("$.formId").exists());
+        .andExpect(jsonPath("$.questionnaireId").exists());
   }
 
   @Test

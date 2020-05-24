@@ -15,6 +15,6 @@ public class OpenApiConfig {
         .components(new Components())
         .info(new Info().title("Dynamic Forms API").description(
             "The purpose of this API is to provide and interface to allow a front end to retrieve and update all"
-                + " information required to display checklist forms."));
+                + " inquestionnaireation required to display checklist questionnaires."));
   }
 }

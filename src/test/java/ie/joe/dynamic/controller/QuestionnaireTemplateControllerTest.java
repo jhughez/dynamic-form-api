@@ -10,9 +10,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import ie.joe.dynamic.constants.ApiVersion;
-import ie.joe.dynamic.dto.FormTemplateDTO;
-import ie.joe.dynamic.model.FormTemplate;
-import ie.joe.dynamic.service.FormTemplateService;
+import ie.joe.dynamic.dto.QuestionnaireTemplateDTO;
+import ie.joe.dynamic.model.QuestionnaireTemplate;
+import ie.joe.dynamic.service.QuestionnaireTemplateService;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
@@ -32,9 +32,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.web.util.NestedServletException;
 
 @ExtendWith(SpringExtension.class)
-@WebMvcTest(controllers =  FormTemplateController.class)
+@WebMvcTest(controllers =  QuestionnaireTemplateController.class)
 @AutoConfigureMockMvc(addFilters = false)
-class FormTemplateControllerTest {
+class QuestionnaireTemplateControllerTest {
 
   private final String baseUrl = "/api/" + ApiVersion.CURRENT + "/templates";
 
@@ -45,7 +45,7 @@ class FormTemplateControllerTest {
   private ModelMapper modelMapper;
 
   @MockBean
-  private FormTemplateService formTemplateService;
+  private QuestionnaireTemplateService questionnaireTemplateService;
 
 
 
@@ -63,12 +63,12 @@ class FormTemplateControllerTest {
   void findByIdNotFoundTest() {
     Exception exception = assertThrows(NestedServletException.class, () -> mockMvc.perform(get(baseUrl + "/1")));
     assertTrue(exception.getCause() instanceof NoSuchElementException, "Expected no such element exception to be thrown");
-    assertTrue(exception.getCause().getMessage().startsWith("Unable to find Form Template with id: [1]"));
+    assertTrue(exception.getCause().getMessage().startsWith("Unable to find Questionnaire Template with id: [1]"));
   }
 
   @Test
   void findByIdTest() throws Exception {
-    when(formTemplateService.findById(2)).thenReturn(Optional.of(new FormTemplate()));
+    when(questionnaireTemplateService.findById(2)).thenReturn(Optional.of(new QuestionnaireTemplate()));
     ResultActions resultActions = mockMvc.perform( get(baseUrl + "/2")
         .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk());
@@ -77,10 +77,10 @@ class FormTemplateControllerTest {
   @Test
   void createTest() throws Exception {
 
-    FormTemplateDTO formTemplateDTO = new FormTemplateDTO();
-    formTemplateDTO.setTemplateId(1);
+    QuestionnaireTemplateDTO questionnaireTemplateDTO = new QuestionnaireTemplateDTO();
+    questionnaireTemplateDTO.setTemplateId(1);
 
-    when(modelMapper.map(null, FormTemplateDTO.class)).thenReturn(formTemplateDTO);
+    when(modelMapper.map(null, QuestionnaireTemplateDTO.class)).thenReturn(questionnaireTemplateDTO);
 
     mockMvc.perform( MockMvcRequestBuilders
         .post(baseUrl)
@@ -109,14 +109,14 @@ class FormTemplateControllerTest {
 
   @Test
   void updateTest() throws Exception{
-    FormTemplateDTO formTemplateDTO = new FormTemplateDTO();
-    formTemplateDTO.setTemplateId(42);
+    QuestionnaireTemplateDTO questionnaireTemplateDTO = new QuestionnaireTemplateDTO();
+    questionnaireTemplateDTO.setTemplateId(42);
 
-    when(modelMapper.map(null, FormTemplateDTO.class)).thenReturn(formTemplateDTO);
+    when(modelMapper.map(null, QuestionnaireTemplateDTO.class)).thenReturn(questionnaireTemplateDTO);
 
     mockMvc.perform( MockMvcRequestBuilders
         .put(baseUrl + "/42")
-        .content("{\"formId\": 42}")
+        .content("{\"questionnaireId\": 42}")
         .contentType(MediaType.APPLICATION_JSON)
         .accept(MediaType.APPLICATION_JSON))
         .andExpect(status().isOk())

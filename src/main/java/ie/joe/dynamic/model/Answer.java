@@ -15,7 +15,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(schema = "AGINSPECT_DATA", name = "TDAI_ANSWER")
+@Table(schema = "QUESTIONNAIRE_DATA", name = "ANSWER")
 @Getter
 @Setter
 @EqualsAndHashCode
@@ -33,9 +33,9 @@ public class Answer implements Serializable {
   public static class AnswerPK implements Serializable {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="FORM_ID")
+    @JoinColumn(name="QUESTIONNAIRE_ID")
     @JsonBackReference
-    private Form form;
+    private Questionnaire questionnaire;
 
     @Column(name="QUESTION_ID")
     private long questionId;

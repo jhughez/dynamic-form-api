@@ -10,11 +10,12 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(schema = "AGINSPECT_DATA", name = "TSAI_GROUP")
+@Table(schema = "QUESTIONNAIRE_DATA", name = "QUESTIONNAIRE_GROUP")
 @Getter
 @Setter
 @EqualsAndHashCode
-public class Group implements Serializable {
+public class QuestionnaireGroup implements Serializable {
+
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     @Column(name = "GROUP_ID") private Long groupId;

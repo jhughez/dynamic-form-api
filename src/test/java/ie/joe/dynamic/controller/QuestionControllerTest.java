@@ -53,13 +53,6 @@ class QuestionControllerTest {
   }
 
   @Test
-  void findByIdNotFoundTest() {
-    Exception exception = assertThrows(NestedServletException.class, () -> mockMvc.perform(get(baseUrl + "/1")));
-    assertTrue(exception.getCause() instanceof NoSuchElementException, "Expected no such element exception to be thrown");
-    assertTrue(exception.getCause().getMessage().startsWith("Unable to find Form Question with id: [1]"));
-  }
-
-  @Test
   void findByIdTest() throws Exception {
     when(questionService.findById(2)).thenReturn(Optional.of(new Question()));
     ResultActions resultActions = mockMvc.perform( get(baseUrl + "/2")
@@ -113,9 +106,9 @@ class QuestionControllerTest {
   }
 
   @Test
-  void deleteActionToPerformTest() throws Exception {
+  void deleteActionToPerquestionnaireTest() throws Exception {
     mockMvc.perform( MockMvcRequestBuilders
-        .delete(baseUrl + "/1" + "/actionToPerform/" + 1))
+        .delete(baseUrl + "/1" + "/actionToPerquestionnaire/" + 1))
         .andExpect(status().isOk());
   }
 }

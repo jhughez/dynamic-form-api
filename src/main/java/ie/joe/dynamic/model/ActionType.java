@@ -13,7 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(schema = "AGINSPECT_DATA", name = "TSAI_ACTION")
+@Table(schema = "QUESTIONNAIRE_DATA", name = "ACTION")
 @Getter
 @Setter
 @EqualsAndHashCode

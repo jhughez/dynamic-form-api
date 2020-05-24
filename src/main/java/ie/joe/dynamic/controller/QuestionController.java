@@ -43,7 +43,7 @@ public class QuestionController {
   public ResponseEntity<QuestionDTO> findById(@PathVariable long id){
     Optional<Question> question = questionService.findById(id);
     if (!question.isPresent()) {
-      throw new NoSuchElementException("Unable to find Form Question with id: [" + id + "]");
+      throw new NoSuchElementException("Unable to find Question with id: [" + id + "]");
     }
     return ResponseEntity.ok(
         modelMapper.map(question.get(), QuestionDTO.class)
@@ -85,9 +85,9 @@ public class QuestionController {
     return ResponseEntity.ok().build();
   }
 
-  @DeleteMapping("/{questionId}/actionToPerform/{actionId}")
-  public ResponseEntity deleteActionToPerform(@PathVariable Long questionId, @PathVariable Long actionId) {
-    questionService.deleteActionToPerform(actionId);
+  @DeleteMapping("/{questionId}/actionToPerquestionnaire/{actionId}")
+  public ResponseEntity deleteActionToPerquestionnaire(@PathVariable Long questionId, @PathVariable Long actionId) {
+    questionService.deleteActionToPerquestionnaire(actionId);
     return ResponseEntity.ok().build();
   }
 }

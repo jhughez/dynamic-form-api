@@ -65,8 +65,8 @@ class QuestionServiceTest {
   }
 
   @Test
-  void deleteActionToPerformTest() {
-    questionService.deleteActionToPerform(1L);
+  void deleteActionToPerquestionnaireTest() {
+    questionService.deleteActionToPerquestionnaire(1L);
   }
 
 }

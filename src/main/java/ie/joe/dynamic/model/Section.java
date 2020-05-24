@@ -23,7 +23,7 @@ import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
 @Entity
-@Table(schema = "AGINSPECT_DATA", name = "TSAI_SECTION")
+@Table(schema = "QUESTIONNAIRE_DATA", name = "SECTION")
 @Getter
 @Setter
 @EqualsAndHashCode
@@ -39,14 +39,14 @@ public class Section  implements Serializable {
   @Fetch(FetchMode.SELECT)
   @OrderBy("order")
   @JsonManagedReference
-  private Collection<Group> group;
+  private Collection<QuestionnaireGroup> group;
 
   @ManyToOne
-  @JoinColumn(name = "FORM_ID", nullable = false, updatable = false)
+  @JoinColumn(name = "TEMPLATE_ID", nullable = false, updatable = false)
   @JsonBackReference
-  private FormTemplate formTemplate;
+  private QuestionnaireTemplate questionnaireTemplate;
 
-  public void setGroup(Collection<Group> group) {
+  public void setGroup(Collection<QuestionnaireGroup> group) {
     group.forEach(x-> x.setSection(this));
     this.group = group;
   }

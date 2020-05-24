@@ -17,26 +17,25 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(schema = "AGINSPECT_DATA", name = "TDAI_FORM")
+@Table(schema = "QUESTIONNAIRE_DATA", name = "QUESTIONNAIRE")
 @Getter
 @Setter
-public class Form implements Serializable {
+public class Questionnaire implements Serializable {
 
   @Id
   @GeneratedValue(strategy= GenerationType.IDENTITY)
-  @Column(name = "FORM_ID") private long formId;
-  @Column(name = "VISIT_ID") private long inspId;
+  @Column(name = "QUESTIONNAIRE_ID") private long questionnaireId;
 
   @ManyToOne
   @JoinColumn(name="TEMPLATE_ID")
-  private FormTemplate formTemplate;
+  private QuestionnaireTemplate questionnaireTemplate;
 
-  @OneToMany(cascade = CascadeType.ALL, mappedBy = "answerPK.form")
+  @OneToMany(cascade = CascadeType.ALL, mappedBy = "answerPK.questionnaire")
   @JsonManagedReference
   private Collection<Answer> answers;
 
   public void setAnswers(Collection<Answer> answers) {
-    answers.forEach(x -> x.getAnswerPK().setForm(this));
+    answers.forEach(x -> x.getAnswerPK().setQuestionnaire(this));
     this.answers = answers;
   }
 }

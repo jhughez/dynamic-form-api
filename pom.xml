@@ -12,10 +12,10 @@
   </parent>
 
   <groupId>ie.joe.dynamic</groupId>
-  <artifactId>dynamic-form-api</artifactId>
+  <artifactId>dynamic-questionnaire-api</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>dynamic-form-api</name>
-  <description>Dynamic forms</description>
+  <name>dynamic-questionnaire-api</name>
+  <description>Dynamic questionnaires</description>
 
   <properties>
     <start-class>ie.joe.dynamic.DynamicApplication</start-class>

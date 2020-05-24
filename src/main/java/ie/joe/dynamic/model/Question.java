@@ -22,7 +22,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(schema = "AGINSPECT_DATA", name = "TSAI_QUESTION")
+@Table(schema = "QUESTIONNAIRE_DATA", name = "QUESTION")
 @Getter
 @Setter
 @EqualsAndHashCode
@@ -48,7 +48,7 @@ public class Question implements Serializable {
   @ManyToOne
   @JoinColumn(name = "GROUP_ID", nullable = false, updatable = false)
   @JsonBackReference
-  private Group group;
+  private QuestionnaireGroup group;
 
   @ManyToOne
   @JoinColumn(name="QUESTION_TYPE_ID")
@@ -75,7 +75,7 @@ public class Question implements Serializable {
     this.validationRules = validationRules;
   }
 
-  public void setActionToPerform(Collection<ActionValue> actionToPerform) {
+  public void setActionToPerform(Collection<ActionValue> actionToPerquestionnaire) {
     actionToPerform.forEach(x-> x.setQuestion(this));
     this.actionToPerform = actionToPerform;
   }

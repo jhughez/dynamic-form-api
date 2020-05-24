@@ -1,8 +1,8 @@
 package ie.joe.dynamic.config;
 
 import ie.joe.dynamic.converter.dto.AllowableValueDTOToAllowableValue;
-import ie.joe.dynamic.converter.dto.FormToFormDTO;
-import ie.joe.dynamic.converter.dto.FormUserResponseDTOToForm;
+import ie.joe.dynamic.converter.dto.QuestionnaireToQuestionnaireDTO;
+import ie.joe.dynamic.converter.dto.QuestionnaireUserResponseDTOToQuestionnaire;
 import ie.joe.dynamic.converter.dto.LongIdToQuestion;
 import ie.joe.dynamic.converter.dto.QuestionToIdConverter;
 import ie.joe.dynamic.converter.dto.ValidationLinkToValidationRuleDTO;
@@ -22,8 +22,8 @@ public class ModelMapperConfig {
     modelMapper.addConverter(new AllowableValueDTOToAllowableValue());
     modelMapper.addConverter(new ValidationRuleDTOToValidationLink());
     modelMapper.addConverter(new ValidationLinkToValidationRuleDTO());
-    modelMapper.addConverter(new FormToFormDTO(modelMapper));
-    modelMapper.addConverter(new FormUserResponseDTOToForm());
+    modelMapper.addConverter(new QuestionnaireToQuestionnaireDTO(modelMapper));
+    modelMapper.addConverter(new QuestionnaireUserResponseDTOToQuestionnaire());
     return modelMapper;
   }
 }

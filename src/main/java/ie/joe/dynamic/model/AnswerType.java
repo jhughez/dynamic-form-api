@@ -13,7 +13,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(schema = "AGINSPECT_DATA", name = "TSAI_ANSWER_TYPE")
+@Table(schema = "QUESTIONNAIRE_DATA", name = "ANSWER_TYPE")
 @Getter
 @Setter
 @EqualsAndHashCode
