@@ -90,7 +90,7 @@ class QuestionnaireControllerintegrationTest {
     GroupDTO groupDTO = sectionDTO.getGroup().iterator().next();
     QuestionDTO questionDTO = groupDTO.getQuestion().iterator().next();
 
-    assertEquals("RVO FinFish inspection questionnaire", questionnaireTemplateDTO.getTemplateDesc());
+    assertEquals("inspection questionnaire", questionnaireTemplateDTO.getTemplateDesc());
     assertEquals("Identity Fields Section", sectionDTO.getSectionTitle());
     assertEquals(26, groupDTO.getGroupId());
     assertEquals(84, questionDTO.getQuestionId());
