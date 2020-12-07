@@ -1,5 +1,4 @@
 package ie.joe.dynamic.dto;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

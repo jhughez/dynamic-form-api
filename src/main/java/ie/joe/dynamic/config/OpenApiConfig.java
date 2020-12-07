@@ -13,8 +13,8 @@ public class OpenApiConfig {
   public OpenAPI customOpenAPI() {
     return new OpenAPI()
         .components(new Components())
-        .info(new Info().title("Dynamic Forms API").description(
+        .info(new Info().title("Dynamic questionnaire API").description(
             "The purpose of this API is to provide and interface to allow a front end to retrieve and update all"
-                + " inquestionnaireation required to display checklist questionnaires."));
+                + " information required to display checklist questionnaires."));
   }
 }

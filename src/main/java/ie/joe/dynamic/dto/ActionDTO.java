@@ -1,8 +1,9 @@
 package ie.joe.dynamic.dto;
-import java.util.Collection;
-import lombok.Data;
+
 import lombok.Getter;
 import lombok.Setter;
+
+import java.util.Collection;
 
 @Getter
 @Setter

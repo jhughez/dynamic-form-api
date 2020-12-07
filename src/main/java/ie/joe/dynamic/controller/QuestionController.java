@@ -10,17 +10,21 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/" + ApiVersion.CURRENT + "/questions")
 @Log4j2
 public class QuestionController {
+
+  private static final String ID_ALREADY_EXISTS = "Id [ %d ] is not existed";
 
   private QuestionService questionService;
   private ModelMapper modelMapper;
@@ -51,43 +55,38 @@ public class QuestionController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity delete(@PathVariable Long id) {
+  public void delete(@PathVariable Long id) {
     Question question = questionService.findById(id).orElse(null);
     if (!questionService.findById(id).isPresent()) {
-      log.error("Id " + id + " is not existed");
-      return ResponseEntity.badRequest().build();
+      log.error(String.format(ID_ALREADY_EXISTS, id));
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
     questionService.delete(question);
-
-    return ResponseEntity.ok().build();
   }
 
   @DeleteMapping("/{id}/allowableValues/{value}")
-  public ResponseEntity deleteAllowableValue(@PathVariable Long id, @PathVariable String value) {
+  public void deleteAllowableValue(@PathVariable Long id, @PathVariable String value) {
     Optional<Question> question = questionService.findById(id);
     if (!question.isPresent()) {
-      log.error("Id " + id + " is not existed");
-      return ResponseEntity.badRequest().build();
+      log.error(String.format(ID_ALREADY_EXISTS, id));
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
     questionService.deleteAllowableValue(question.get(), value);
-    return ResponseEntity.ok().build();
   }
 
   @DeleteMapping("/{questionId}/validationRules/{ruleId}")
-  public ResponseEntity deleteValidationRules(@PathVariable Long questionId, @PathVariable Long ruleId) {
+  public void deleteValidationRules(@PathVariable Long questionId, @PathVariable Long ruleId) {
     Optional<Question> question = questionService.findById(questionId);
     if (!question.isPresent()) {
-      log.error("Id " + questionId + " is not existed");
-      return ResponseEntity.badRequest().build();
+      log.error(String.format(ID_ALREADY_EXISTS, questionId));
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
     }
 
     questionService.deleteValidationRule(question.get(), ruleId);
-    return ResponseEntity.ok().build();
   }
 
   @DeleteMapping("/{questionId}/actionToPerquestionnaire/{actionId}")
-  public ResponseEntity deleteActionToPerquestionnaire(@PathVariable Long questionId, @PathVariable Long actionId) {
+  public void deleteActionToPerquestionnaire(@PathVariable Long questionId, @PathVariable Long actionId) {
     questionService.deleteActionToPerquestionnaire(actionId);
-    return ResponseEntity.ok().build();
   }
 }

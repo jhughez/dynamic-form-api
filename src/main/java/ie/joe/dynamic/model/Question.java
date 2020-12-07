@@ -75,7 +75,7 @@ public class Question implements Serializable {
     this.validationRules = validationRules;
   }
 
-  public void setActionToPerform(Collection<ActionValue> actionToPerquestionnaire) {
+  public void setActionToPerform(Collection<ActionValue> actionToPerform) {
     actionToPerform.forEach(x-> x.setQuestion(this));
     this.actionToPerform = actionToPerform;
   }

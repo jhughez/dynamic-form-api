@@ -3,6 +3,7 @@ package ie.joe.dynamic.service;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ie.joe.dynamic.dao.QuestionnaireRepository;
@@ -51,7 +52,9 @@ class QuestionnaireServiceTest {
 
   @Test
   void deleteByIdTest() {
-    questionnaireService.deleteById(1L);
+    long id = 1L;
+    questionnaireService.deleteById(id);
+    verify(questionnaireRepository).deleteById(id);
   }
 
 }

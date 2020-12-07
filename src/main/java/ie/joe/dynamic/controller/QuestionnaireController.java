@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/" + ApiVersion.CURRENT + "/questionnaires")
@@ -56,9 +58,10 @@ public class QuestionnaireController {
   }
 
   @PostMapping
-  public ResponseEntity create(@Valid @RequestBody QuestionnaireUserResponseDTO questionnaireUserResponseDTO) {
+  public ResponseEntity<QuestionnaireDTO> create(@Valid @RequestBody QuestionnaireUserResponseDTO questionnaireUserResponseDTO) {
     if(questionnaireUserResponseDTO.getQuestionnaireId() > 0){
-      return ResponseEntity.unprocessableEntity().body("You cannot create a questionnaire with an ID.  Questionnaire ID is an auto generated field.");
+      throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY
+              , "You cannot create a questionnaire with an ID.  Questionnaire ID is an auto generated field.");
     } else {
       Questionnaire questionnaire = modelMapper.map(questionnaireUserResponseDTO, Questionnaire.class);
       return ResponseEntity.ok(
@@ -76,9 +79,8 @@ public class QuestionnaireController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity delete(@PathVariable Long id) {
+  public void delete(@PathVariable Long id) {
     questionnaireService.deleteById(id);
-    return ResponseEntity.ok().build();
   }
 
 }

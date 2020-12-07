@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import javax.validation.Valid;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/api/" + ApiVersion.CURRENT + "/templates")
@@ -55,9 +57,10 @@ public class QuestionnaireTemplateController {
   }
 
   @PostMapping
-  public ResponseEntity create(@Valid @RequestBody QuestionnaireTemplateDTO questionnaireTemplateDTO) {
+  public ResponseEntity<QuestionnaireTemplateDTO> create(@Valid @RequestBody QuestionnaireTemplateDTO questionnaireTemplateDTO) {
     if(questionnaireTemplateDTO.getTemplateId() > 0){
-      return ResponseEntity.unprocessableEntity().body("You cannot create a template with an ID.  Template ID is an auto generated field.");
+      throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY
+              ,"You cannot create a template with an ID.  Template ID is an auto generated field.");
     } else {
       return ResponseEntity.ok(
           modelMapper.map(
@@ -77,8 +80,7 @@ public class QuestionnaireTemplateController {
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity delete(@PathVariable Long id) {
+  public void delete(@PathVariable Long id) {
     questionnaireTemplateService.deleteById(id);
-    return ResponseEntity.ok().build();
   }
 }

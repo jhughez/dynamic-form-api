@@ -98,7 +98,7 @@ class QuestionnaireControllerTest {
         .andExpect(status().isUnprocessableEntity())
         .andReturn();
 
-    String content = result.getResponse().getContentAsString();
+    String content = result.getResponse().getErrorMessage();
     assertEquals("You cannot create a questionnaire with an ID.  Questionnaire ID is an auto generated field.",
         content);
   }

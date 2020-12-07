@@ -2,7 +2,9 @@ package ie.joe.dynamic.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import ie.joe.dynamic.dao.ActionValueRepository;
@@ -10,7 +12,9 @@ import ie.joe.dynamic.dao.AllowableValueRepository;
 import ie.joe.dynamic.dao.QuestionRepository;
 import ie.joe.dynamic.dao.ValidationLinkRepository;
 import ie.joe.dynamic.dao.ValidationRuleRepository;
+import ie.joe.dynamic.model.AllowableValue;
 import ie.joe.dynamic.model.Question;
+import ie.joe.dynamic.model.ValidationLink;
 import ie.joe.dynamic.model.ValidationRule;
 import java.util.Collections;
 import java.util.List;
@@ -49,12 +53,17 @@ class QuestionServiceTest {
 
   @Test
   void deleteByIdTest() {
-    questionService.deleteById(1L);
+    long id = 1L;
+    questionService.deleteById(id);
+    verify(questionRepository).deleteById(id);
   }
 
   @Test
   void deleteAllowableValueTest() {
-    questionService.deleteAllowableValue(new Question(), "test");
+    Question question = new Question();
+    String value = "test";
+    questionService.deleteAllowableValue(question, value);
+    verify(allowableValueRepository).deleteById(any(AllowableValue.AllowableValuePK.class));
   }
 
   @Test
@@ -62,11 +71,14 @@ class QuestionServiceTest {
     long ruleId = 1;
     when(validationRuleRepository.findById(ruleId)).thenReturn(Optional.of(new ValidationRule()));
     questionService.deleteValidationRule(new Question(), ruleId);
+    verify(validationLinkRepository).deleteById(any(ValidationLink.ValidationLinkPK.class));
   }
 
   @Test
   void deleteActionToPerquestionnaireTest() {
-    questionService.deleteActionToPerquestionnaire(1L);
+    long actionValId = 1L;
+    questionService.deleteActionToPerquestionnaire(actionValId);
+    verify(actionValueRepository).deleteById(actionValId);
   }
 
 }
